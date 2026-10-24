@@ -3,118 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ひと息ついて、今日の運勢を。ボタンひとつで楽しめるおみくじです。">
-  <title>今日のおみくじ</title>
+  <meta name="description" content="架空のWebデザイナー・青山はるかのプロフィールページ。自己紹介や好きなこと、これまでの活動を紹介します。">
+  <title>青山 はるか | プロフィール</title>
   <style>
+    :root { --ink: #303e37; --muted: #657068; --green: #355846; --line: #dedfd4; --paper: #faf9f3; }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      min-height: 100svh;
-      display: grid;
-      place-items: center;
-      padding: 28px 20px;
-      background: #f4efe6;
-      color: #38332e;
-      font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif; line-height: 1.9; }
+    a { color: inherit; text-underline-offset: 5px; }
+    a:focus-visible { outline: 3px solid var(--green); outline-offset: 6px; border-radius: 2px; }
+    .skip { position: absolute; top: -100px; left: 16px; z-index: 2; padding: 8px 16px; background: white; }
+    .skip:focus { top: 12px; }
+    .container { width: min(100% - 48px, 1000px); margin-inline: auto; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-block: 25px; border-bottom: 1px solid var(--line); }
+    .logo { font: 600 23px Georgia, serif; letter-spacing: .06em; text-decoration: none; }
+    nav { display: flex; flex-wrap: wrap; gap: 24px; font-size: 13px; }
+    nav a { text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .hero { display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 60px; padding-block: 72px 64px; }
+    .eyebrow { margin: 0 0 20px; color: var(--green); font: 600 11px/1.7 sans-serif; letter-spacing: .19em; }
+    .lead { margin: 0 0 18px; font-family: "Yu Mincho", "Hiragino Mincho ProN", serif; font-size: clamp(24px, 3.8vw, 36px); font-weight: 500; line-height: 1.7; }
+    h1 { margin: 0; font-size: 28px; letter-spacing: .12em; }
+    .name-en { margin: 3px 0 18px; color: var(--muted); font: 12px/1.8 sans-serif; letter-spacing: .14em; }
+    .bio { max-width: 420px; margin: 0; font-size: 14px; color: var(--muted); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .tag { border: 1px solid #cfd6c9; border-radius: 20px; padding: 3px 12px; font-size: 11px; color: var(--green); }
+    .portrait { position: relative; margin: 0; padding: 26px 28px 20px; background: #e6ebdd; border-radius: 150px 150px 8px 8px; text-align: center; }
+    .portrait svg { display: block; width: 100%; height: auto; }
+    figcaption { margin-top: 12px; color: #52624b; font: 11px/1.8 sans-serif; letter-spacing: .12em; }
+    .section { padding-block: 44px; border-top: 1px solid var(--line); }
+    .section-heading { display: flex; align-items: baseline; gap: 16px; margin-bottom: 26px; }
+    .section-heading span { font: 11px sans-serif; color: #667a5d; letter-spacing: .08em; }
+    h2 { margin: 0; font-family: "Yu Mincho", "Hiragino Mincho ProN", serif; font-size: 24px; font-weight: 500; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .about-grid p { margin: 0; color: var(--muted); font-size: 14px; }
+    dl { margin: 0; font-size: 13px; }
+    dl div { display: grid; grid-template-columns: 88px 1fr; gap: 12px; padding-block: 9px; border-bottom: 1px solid #e6e7de; }
+    dt { color: var(--muted); }
+    dd { margin: 0; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { padding: 26px 24px; border-radius: 6px; background: #efeee5; }
+    .card:nth-child(2) { background: #f3e9df; }
+    .card:nth-child(3) { background: #e7ece3; }
+    .card-icon { font-size: 28px; }
+    h3 { margin: 16px 0 9px; font-size: 16px; }
+    .card p { margin: 0; color: #5a655e; font-size: 13px; }
+    .timeline { list-style: none; margin: 0; padding: 0; }
+    .timeline li { display: grid; grid-template-columns: 80px 1fr; gap: 24px; padding-block: 17px; border-bottom: 1px solid #e6e7de; }
+    .timeline time { color: var(--green); font: 14px/1.9 Georgia, serif; }
+    .timeline h3 { margin: 0 0 3px; font-size: 14px; }
+    .timeline p { margin: 0; color: var(--muted); font-size: 13px; }
+    .closing { margin: 20px 0 42px; padding: 30px 24px; text-align: center; border: 1px solid #cdd6c5; border-radius: 6px; }
+    .closing p { margin: 0; font-family: "Yu Mincho", serif; font-size: 18px; }
+    .closing small { display: block; margin-top: 10px; font-size: 11px; color: var(--muted); }
+    footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-block: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    footer p { margin: 0; }
+    @media (max-width: 680px) {
+      .container { width: min(100% - 36px, 480px); }
+      header { gap: 16px; }
+      nav { gap: 14px; font-size: 11px; }
+      .hero { grid-template-columns: 1fr; gap: 32px; padding-block: 40px; }
+      .portrait { width: min(100%, 300px); margin-inline: auto; }
+      .about-grid, .cards { grid-template-columns: 1fr; gap: 18px; }
+      .section { padding-block: 32px; }
+      .card { padding: 22px; }
+      .card h3 { margin-top: 8px; }
+      .timeline li { grid-template-columns: 55px 1fr; gap: 16px; }
     }
-    main { width: 100%; max-width: 440px; text-align: center; }
-    .eyebrow { color: #8d382e; font: 12px/1.5 sans-serif; letter-spacing: .24em; }
-    h1 { margin: 14px 0; font-size: clamp(28px, 7vw, 36px); font-weight: 500; letter-spacing: .14em; }
-    .intro { margin: 0 0 26px; color: #6d645b; font-size: 14px; line-height: 1.9; }
-    .paper {
-      position: relative;
-      padding: 30px 24px;
-      border: 1px solid #dbcec0;
-      background: #fffdf7;
-      box-shadow: 0 14px 36px #4433240c;
-    }
-    .paper::before { content: ""; position: absolute; inset: 7px; border: 1px solid #e9dfd2; pointer-events: none; }
-    .stamp {
-      display: inline-grid;
-      place-items: center;
-      width: 38px;
-      height: 38px;
-      border: 1px solid #a73d32;
-      border-radius: 50%;
-      color: #a73d32;
-      font-size: 20px;
-    }
-    .label { margin: 20px 0 12px; font-size: 13px; color: #786b60; letter-spacing: .18em; }
-    #fortune { margin: 0; color: #a5362c; font-size: 64px; font-weight: 500; letter-spacing: .12em; line-height: 1.4; }
-    #message { min-height: 3.8em; margin: 18px 0; line-height: 1.9; font-size: 15px; }
-    .lucky { border-top: 1px solid #e6dcd0; padding-top: 18px; color: #6d645b; font-size: 13px; line-height: 1.8; }
-    #color { color: #38332e; font-weight: bold; }
-    button {
-      width: 100%;
-      min-height: 54px;
-      margin-top: 24px;
-      padding: 14px 20px;
-      border: 1px solid #923027;
-      border-radius: 4px;
-      background: #a5362c;
-      color: #fffdf7;
-      font: inherit;
-      font-size: 16px;
-      letter-spacing: .12em;
-      cursor: pointer;
-      transition: background .2s, transform .2s;
-    }
-    button:hover { background: #87291f; }
-    button:active { transform: translateY(2px); }
-    button:focus-visible { outline: 3px solid #38332e; outline-offset: 4px; }
-    .note { margin-top: 18px; color: #786b60; font: 12px/1.8 sans-serif; }
-    .reveal { animation: reveal .35s ease-out; }
-    @keyframes reveal { from { opacity: .3; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
-<body>
-  <main>
-    <p class="eyebrow">OMIKUJI · DEPLOYDAY 10/24</p>
-    <h1>今日のおみくじ</h1>
-    <p class="intro">ひと息ついて、心をしずめて。<br>今日のあなたへ、小さな道しるべ。</p>
+<body id="top">
+  <a class="skip" href="#main">本文へ移動</a>
+  <div class="container">
+    <header>
+      <a class="logo" href="#top" aria-label="ページの先頭へ">H.A.</a>
+      <nav aria-label="ページ内ナビゲーション">
+        <a href="#about">私について</a>
+        <a href="#favorites">好きなこと</a>
+        <a href="#journey">これまで</a>
+      </nav>
+    </header>
 
-    <section class="paper" aria-label="おみくじの結果" aria-live="polite" aria-atomic="true">
-      <span class="stamp" aria-hidden="true">福</span>
-      <p class="label" id="label">今日の運勢は？</p>
-      <h2 id="fortune">おみくじ</h2>
-      <p id="message">下のボタンを押して、<br>運勢を引いてみましょう。</p>
-      <div class="lucky">ラッキーカラー：<span id="color">お楽しみ</span></div>
-    </section>
+    <main id="main">
+      <section class="hero" aria-labelledby="profile-name">
+        <div>
+          <p class="eyebrow">HELLO, NICE TO MEET YOU.</p>
+          <p class="lead">日々の「ちょっといい」を、<br>かたちにする。</p>
+          <h1 id="profile-name">青山 はるか</h1>
+          <p class="name-en">HARUKA AOYAMA / WEB DESIGNER</p>
+          <p class="bio">名古屋を拠点に活動するWebデザイナー。<br>伝えたい気持ちをすくい上げて、やさしく、わかりやすいデザインをつくっています。</p>
+          <div class="tags" aria-label="プロフィールのキーワード">
+            <span class="tag">名古屋暮らし</span>
+            <span class="tag">デザイン</span>
+            <span class="tag">コーヒーと本</span>
+          </div>
+        </div>
+        <figure class="portrait">
+          <svg viewBox="0 0 300 310" role="img" aria-labelledby="portrait-title">
+            <title id="portrait-title">緑の服を着て微笑む、青山はるかのイメージイラスト</title>
+            <circle cx="150" cy="144" r="122" fill="#f4f2e4"/>
+            <path d="M61 300c0-63 32-97 89-97s89 34 89 97" fill="#56765e"/>
+            <path d="M127 182h46v47c-14 16-32 16-46 0z" fill="#e8b493"/>
+            <path d="M88 139c-11-57 8-96 62-96s76 41 63 101l-8 64H94z" fill="#443a31"/>
+            <ellipse cx="93" cy="145" rx="10" ry="16" fill="#efc3a3"/>
+            <ellipse cx="207" cy="145" rx="10" ry="16" fill="#efc3a3"/>
+            <ellipse cx="150" cy="139" rx="54" ry="67" fill="#f1c8a9"/>
+            <path d="M96 119c-5-42 20-64 56-64 38 0 60 31 53 63-31-4-53-18-65-37-7 18-23 30-44 38z" fill="#443a31"/>
+            <path d="M114 139q7-6 14 0m44 0q7-6 14 0" fill="none" stroke="#554137" stroke-width="3" stroke-linecap="round"/>
+            <path d="M139 169q11 10 22 0" fill="none" stroke="#ad6556" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="115" cy="158" rx="10" ry="5" fill="#e8a38e" opacity=".55"/>
+            <ellipse cx="185" cy="158" rx="10" ry="5" fill="#e8a38e" opacity=".55"/>
+            <path d="m126 221 24 25 24-25" fill="none" stroke="#e6ebdd" stroke-width="3"/>
+            <path d="M41 224c-18-16-23-37-17-58 19 13 26 32 17 58zm0 0c0-24 11-41 31-49-1 23-12 40-31 49z" fill="#9dab88"/>
+            <circle cx="248" cy="68" r="7" fill="#dba27c"/>
+            <path d="M251 99v14m-7-7h14" stroke="#9dab88" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <figcaption>A LITTLE ABOUT ME</figcaption>
+        </figure>
+      </section>
 
-    <button id="draw" type="button">おみくじを引く</button>
-    <p class="note">何度でも引けます。気軽にお楽しみください。</p>
-    <noscript><p>おみくじを引くには、ブラウザーのJavaScriptを有効にしてください。</p></noscript>
-  </main>
+      <section class="section" id="about" aria-labelledby="about-title">
+        <div class="section-heading"><span>01 / ABOUT</span><h2 id="about-title">私について</h2></div>
+        <div class="about-grid">
+          <p>はじめまして、青山はるかです。小さなお店や地域の活動を応援するWebサイトをつくっています。大切にしているのは、使う人の目線で考えること。休日に街を歩いて見つけた色や言葉も、デザインのヒントになっています。</p>
+          <dl>
+            <div><dt>拠点</dt><dd>愛知県名古屋市</dd></div>
+            <div><dt>仕事</dt><dd>Webデザイン・イラスト</dd></div>
+            <div><dt>得意なこと</dt><dd>情報整理、やさしい配色</dd></div>
+            <div><dt>大切な言葉</dt><dd>小さく試して、楽しく育てる。</dd></div>
+          </dl>
+        </div>
+      </section>
 
-  <script>
-    // 運勢やメッセージは、ここを書き換えるだけで変更できます。
-    const fortunes = [
-      { name: "大吉", message: "新しい一歩にぴったりの日。気になっていたことに挑戦してみよう。", color: "金色" },
-      { name: "中吉", message: "こつこつ続けてきたことが実りそう。自分のペースを大切に。", color: "橙色" },
-      { name: "小吉", message: "身近なところに小さな幸せが。いつもの景色をゆっくり眺めてみよう。", color: "緑色" },
-      { name: "吉", message: "人とのつながりが力になる日。ありがとうを言葉にしてみよう。", color: "赤色" },
-      { name: "末吉", message: "楽しみはこれから。焦らず準備を整えれば、きっと道が開けます。", color: "水色" },
-      { name: "凶", message: "今日はひと休みを大切に。ゆっくり深呼吸して、明日に向けて力を蓄えよう。", color: "白色" }
-    ];
+      <section class="section" id="favorites" aria-labelledby="favorites-title">
+        <div class="section-heading"><span>02 / FAVORITES</span><h2 id="favorites-title">好きなこと</h2></div>
+        <div class="cards">
+          <article class="card"><span class="card-icon" aria-hidden="true">☕</span><h3>喫茶店めぐり</h3><p>窓ぎわの席でコーヒーを一杯。お店のメニューや看板を眺めるのも楽しみです。</p></article>
+          <article class="card"><span class="card-icon" aria-hidden="true">📚</span><h3>本とノート</h3><p>エッセイと絵本が好き。心に残った言葉やアイデアを、ノートに書き留めています。</p></article>
+          <article class="card"><span class="card-icon" aria-hidden="true">🌿</span><h3>街歩きと写真</h3><p>いつもと違う道を歩いて、小さな発見を。古い建物や季節の緑を撮るのが好きです。</p></article>
+        </div>
+      </section>
 
-    const button = document.getElementById("draw");
-    const paper = document.querySelector(".paper");
+      <section class="section" id="journey" aria-labelledby="journey-title">
+        <div class="section-heading"><span>03 / JOURNEY</span><h2 id="journey-title">これまでの歩み</h2></div>
+        <ol class="timeline">
+          <li><time datetime="2020">2020</time><div><h3>デザインとの出会い</h3><p>大学のサークルでイベントのポスターを制作。伝わる楽しさを知り、デザインを学び始める。</p></div></li>
+          <li><time datetime="2022">2022</time><div><h3>制作会社で、ものづくりの毎日</h3><p>Webサイトのデザインを担当。仲間と一緒に、見やすさと使いやすさを考える日々。</p></div></li>
+          <li><time datetime="2025">2025</time><div><h3>地域に寄り添うデザイナーへ</h3><p>フリーランスとして独立。小さなお店や地域のイベントの魅力を伝える活動を始める。</p></div></li>
+        </ol>
+      </section>
 
-    button.addEventListener("click", () => {
-      // 6種類の運勢から、同じ確率で1つ選びます。
-      const result = fortunes[Math.floor(Math.random() * fortunes.length)];
-      document.getElementById("label").textContent = "あなたの今日の運勢";
-      document.getElementById("fortune").textContent = result.name;
-      document.getElementById("message").textContent = result.message;
-      document.getElementById("color").textContent = result.color;
-      button.textContent = "もう一度引く";
+      <aside class="closing" aria-label="これからの目標">
+        <p>つくることを通して、<br>誰かの一歩を応援できたら。</p>
+        <small>これからは、地域の人が気軽に集まれるデザイン勉強会も開いてみたいです。</small>
+      </aside>
+    </main>
 
-      paper.classList.remove("reveal");
-      void paper.offsetWidth;
-      paper.classList.add("reveal");
-    });
-  </script>
+    <footer>
+      <p>演習用サンプルです。人物・経歴はすべて架空です。</p>
+      <a href="#top">ページの先頭へ ↑</a>
+    </footer>
+  </div>
 </body>
 </html>
