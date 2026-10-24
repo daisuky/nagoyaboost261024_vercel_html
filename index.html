@@ -1,11 +1,120 @@
 <!DOCTYPE html>
-<html lang="jp">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello, world!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ひと息ついて、今日の運勢を。ボタンひとつで楽しめるおみくじです。">
+  <title>今日のおみくじ</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 28px 20px;
+      background: #f4efe6;
+      color: #38332e;
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    }
+    main { width: 100%; max-width: 440px; text-align: center; }
+    .eyebrow { color: #8d382e; font: 12px/1.5 sans-serif; letter-spacing: .24em; }
+    h1 { margin: 14px 0; font-size: clamp(28px, 7vw, 36px); font-weight: 500; letter-spacing: .14em; }
+    .intro { margin: 0 0 26px; color: #6d645b; font-size: 14px; line-height: 1.9; }
+    .paper {
+      position: relative;
+      padding: 30px 24px;
+      border: 1px solid #dbcec0;
+      background: #fffdf7;
+      box-shadow: 0 14px 36px #4433240c;
+    }
+    .paper::before { content: ""; position: absolute; inset: 7px; border: 1px solid #e9dfd2; pointer-events: none; }
+    .stamp {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid #a73d32;
+      border-radius: 50%;
+      color: #a73d32;
+      font-size: 20px;
+    }
+    .label { margin: 20px 0 12px; font-size: 13px; color: #786b60; letter-spacing: .18em; }
+    #fortune { margin: 0; color: #a5362c; font-size: 64px; font-weight: 500; letter-spacing: .12em; line-height: 1.4; }
+    #message { min-height: 3.8em; margin: 18px 0; line-height: 1.9; font-size: 15px; }
+    .lucky { border-top: 1px solid #e6dcd0; padding-top: 18px; color: #6d645b; font-size: 13px; line-height: 1.8; }
+    #color { color: #38332e; font-weight: bold; }
+    button {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 24px;
+      padding: 14px 20px;
+      border: 1px solid #923027;
+      border-radius: 4px;
+      background: #a5362c;
+      color: #fffdf7;
+      font: inherit;
+      font-size: 16px;
+      letter-spacing: .12em;
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    button:hover { background: #87291f; }
+    button:active { transform: translateY(2px); }
+    button:focus-visible { outline: 3px solid #38332e; outline-offset: 4px; }
+    .note { margin-top: 18px; color: #786b60; font: 12px/1.8 sans-serif; }
+    .reveal { animation: reveal .35s ease-out; }
+    @keyframes reveal { from { opacity: .3; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
+  </style>
 </head>
 <body>
-    <h1>Hello, world!</h1>
+  <main>
+    <p class="eyebrow">OMIKUJI · DEPLOYDAY 10/24</p>
+    <h1>今日のおみくじ</h1>
+    <p class="intro">ひと息ついて、心をしずめて。<br>今日のあなたへ、小さな道しるべ。</p>
+
+    <section class="paper" aria-label="おみくじの結果" aria-live="polite" aria-atomic="true">
+      <span class="stamp" aria-hidden="true">福</span>
+      <p class="label" id="label">今日の運勢は？</p>
+      <h2 id="fortune">おみくじ</h2>
+      <p id="message">下のボタンを押して、<br>運勢を引いてみましょう。</p>
+      <div class="lucky">ラッキーカラー：<span id="color">お楽しみ</span></div>
+    </section>
+
+    <button id="draw" type="button">おみくじを引く</button>
+    <p class="note">何度でも引けます。気軽にお楽しみください。</p>
+    <noscript><p>おみくじを引くには、ブラウザーのJavaScriptを有効にしてください。</p></noscript>
+  </main>
+
+  <script>
+    // 運勢やメッセージは、ここを書き換えるだけで変更できます。
+    const fortunes = [
+      { name: "大吉", message: "新しい一歩にぴったりの日。気になっていたことに挑戦してみよう。", color: "金色" },
+      { name: "中吉", message: "こつこつ続けてきたことが実りそう。自分のペースを大切に。", color: "橙色" },
+      { name: "小吉", message: "身近なところに小さな幸せが。いつもの景色をゆっくり眺めてみよう。", color: "緑色" },
+      { name: "吉", message: "人とのつながりが力になる日。ありがとうを言葉にしてみよう。", color: "赤色" },
+      { name: "末吉", message: "楽しみはこれから。焦らず準備を整えれば、きっと道が開けます。", color: "水色" },
+      { name: "凶", message: "今日はひと休みを大切に。ゆっくり深呼吸して、明日に向けて力を蓄えよう。", color: "白色" }
+    ];
+
+    const button = document.getElementById("draw");
+    const paper = document.querySelector(".paper");
+
+    button.addEventListener("click", () => {
+      // 6種類の運勢から、同じ確率で1つ選びます。
+      const result = fortunes[Math.floor(Math.random() * fortunes.length)];
+      document.getElementById("label").textContent = "あなたの今日の運勢";
+      document.getElementById("fortune").textContent = result.name;
+      document.getElementById("message").textContent = result.message;
+      document.getElementById("color").textContent = result.color;
+      button.textContent = "もう一度引く";
+
+      paper.classList.remove("reveal");
+      void paper.offsetWidth;
+      paper.classList.add("reveal");
+    });
+  </script>
 </body>
 </html>
